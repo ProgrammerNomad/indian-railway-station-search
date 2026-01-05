@@ -434,6 +434,14 @@ body {
 .hint {
   font-size: 0.95rem;
   font-style: italic;
+  margin-top: 0.5rem;
+}
+
+.hint-sub {
+  font-size: 0.85rem;
+  font-style: italic;
+  margin-top: 0.25rem;
+  opacity: 0.8;
 }
 
 /* Responsive Design */

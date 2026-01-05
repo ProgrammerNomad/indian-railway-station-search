@@ -16,13 +16,20 @@ This project provides a user-friendly interface to search through thousands of I
 
 ## Features
 
-- **Real-time Search**: Search stations by name, code, district, or state
+- **Fuzzy Search with Fuse.js**: Intelligent typo-tolerant search like Algolia
+  - Handles typos and transposed characters (e.g., "GZB" finds "GBZ")
+  - Smart ranking based on relevance
+  - Works across all fields simultaneously
+- **Real-time Autocomplete**: IRCTC/Select2-style dropdown with instant results
 - **Multi-language Support**: Displays station names in 11+ Indian languages
 - **Smart Fallback**: Automatically switches to offline data if CDN is unavailable
-- **Comprehensive Data**: Shows station details including location, train count, coordinates, and addresses
+- **Comprehensive Search**: Search by station name, code, regional languages, district, or state
+- **Multi-select Interface**: Select and view multiple stations at once
 - **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
-- **Fast Performance**: Optimized search with memoization and result limiting
+- **Fast Performance**: Optimized search with intelligent ranking
 - **Modern UI**: Clean, intuitive interface with smooth animations
+- **Keyboard Navigation**: Full keyboard support (Arrow keys, Enter, Escape)
+- **Recently Viewed**: Remembers your recent station searches
 - **Data Source Indicator**: Shows whether using live CDN or offline data
 
 ## Data Source
@@ -127,16 +134,21 @@ indian-railway-station-search/
 - **Next.js 14**: React framework with App Router
 - **TypeScript**: Type-safe development
 - **React 18**: UI library with hooks
+- **Fuse.js**: Powerful fuzzy search library for typo tolerance
 - **CSS3**: Modern styling with flexbox and grid
 - **Government API**: Official Indian Railway data
 
 ## Features Breakdown
 
 ### Search Component
-- Real-time filtering
+- Fuzzy search with Fuse.js for typo tolerance
+- Algolia-like search experience
+- Real-time autocomplete dropdown
+- Keyboard navigation (Arrow keys, Enter, Escape)
 - Clear button for quick reset
 - Results counter
 - Loading and error states
+- Recently viewed stations
 
 ### Station Card
 - Regional names in all available languagode

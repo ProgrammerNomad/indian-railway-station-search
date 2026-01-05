@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useMemo, useRef } from 'react'
+import Fuse from 'fuse.js'
 import type { Station } from '@/types/station'
 import StationCard from './StationCard'
 
@@ -21,6 +22,7 @@ export default function StationSearch() {
   const [activeIndex, setActiveIndex] = useState(-1)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const fuseRef = useRef<Fuse<Station> | null>(null)
 
   useEffect(() => {
     fetchStations()
@@ -115,6 +117,34 @@ export default function StationSearch() {
       
       const data = await response.json()
       setStations(data)
+      
+      // Initialize Fuse.js with fuzzy search configuration
+      fuseRef.current = new Fuse(data, {
+        keys: [
+          { name: 'name', weight: 2 },        // Station name - highest weight
+          { name: 'code', weight: 2 },        // Station code - highest weight
+          { name: 'name_hi', weight: 1.5 },   // Hindi name
+          { name: 'name_gu', weight: 1.5 },   // Gujarati name
+          { name: 'name_ta', weight: 1.5 },   // Tamil name
+          { name: 'name_te', weight: 1.5 },   // Telugu name
+          { name: 'name_kn', weight: 1.5 },   // Kannada name
+          { name: 'name_ml', weight: 1.5 },   // Malayalam name
+          { name: 'name_mr', weight: 1.5 },   // Marathi name
+          { name: 'name_pa', weight: 1.5 },   // Punjabi name
+          { name: 'name_bn', weight: 1.5 },   // Bengali name
+          { name: 'name_or', weight: 1.5 },   // Odia name
+          { name: 'name_as', weight: 1.5 },   // Assamese name
+          { name: 'district', weight: 1 },    // District
+          { name: 'state', weight: 1 },       // State
+        ],
+        threshold: 0.4,           // 0.0 = perfect match, 1.0 = match anything
+        distance: 100,            // How far to search for patterns
+        minMatchCharLength: 2,    // Minimum characters to start matching
+        includeScore: true,       // Include match score
+        ignoreLocation: true,     // Search entire string, not just beginning
+        useExtendedSearch: true,  // Enable extended search patterns
+      })
+      
       setError(null)
     } catch (err) {
       setError('Failed to load station data. Please check your connection.')
@@ -125,34 +155,18 @@ export default function StationSearch() {
   }
 
   const filteredStations = useMemo(() => {
-    if (!searchQuery.trim()) {
+    if (!searchQuery.trim() || !fuseRef.current) {
       return []
     }
 
-    const query = searchQuery.toLowerCase()
-    return stations.filter((station) => {
-      const languageMatch = 
-        (station.name_hi && station.name_hi.includes(query)) ||
-        (station.name_gu && station.name_gu.includes(query)) ||
-        (station.name_ta && station.name_ta.includes(query)) ||
-        (station.name_te && station.name_te.includes(query)) ||
-        (station.name_kn && station.name_kn.includes(query)) ||
-        (station.name_ml && station.name_ml.includes(query)) ||
-        (station.name_mr && station.name_mr.includes(query)) ||
-        (station.name_pa && station.name_pa.includes(query)) ||
-        (station.name_bn && station.name_bn.includes(query)) ||
-        (station.name_or && station.name_or.includes(query)) ||
-        (station.name_as && station.name_as.includes(query))
-      
-      return (
-        station.name.toLowerCase().includes(query) ||
-        station.code.toLowerCase().includes(query) ||
-        languageMatch ||
-        station.district.toLowerCase().includes(query) ||
-        station.state.toLowerCase().includes(query)
-      )
-    }).slice(0, 50)
-  }, [stations, searchQuery])
+    const query = searchQuery.trim()
+    
+    // Use Fuse.js for fuzzy search with typo tolerance
+    const results = fuseRef.current.search(query)
+    
+    // Extract the station objects from Fuse.js results
+    return results.slice(0, 50).map(result => result.item)
+  }, [searchQuery])
 
   if (loading) {
     return (
@@ -180,7 +194,7 @@ export default function StationSearch() {
         <input
           ref={inputRef}
           type="text"
-          placeholder="Search by station name, code, district, or state..."
+          placeholder="Search by station name, code, district, or state (typo-tolerant)..."
           value={searchQuery}
           onChange={(e) => {
             setSearchQuery(e.target.value)
@@ -265,7 +279,8 @@ export default function StationSearch() {
       {selectedStations.length === 0 && !searchQuery && recentStations.length === 0 && (
         <div className="no-results">
           <p>Start typing to search for stations</p>
-          <p className="hint">Search by name, code, district, state, or regional language</p>
+          <p className="hint">Fuzzy search enabled - typos like "GZB" for "GBZ" will work!</p>
+          <p className="hint-sub">Search by name, code, district, state, or regional language</p>
         </div>
       )}
 
