@@ -118,6 +118,8 @@ indian-railway-station-search/
 ├── tsconfig.json           # TypeScript config
 ├── next.config.js          # Next.js config
 └── README.md               # Dirst attempts to fetch station data from the government CDN
+```
+
 2. **Automatic Fallback**: If CDN fails, it automatically switches to the offline backup
 3. **Search Functionality**: Users can search by typing station name (in any language), code, district, or state
 4. **Multi-language Filtering**: Results are filtered across all available regional language names
@@ -128,6 +130,7 @@ indian-railway-station-search/
 3. **Filtering**: Results are filtered in real-time using React's `useMemo` hook
 4. **Display**: Matching stations are displayed in a responsive grid layout
 5. **Performance**: Results are limited to 100 matches to ensure smooth performance
+
 
 ## Technologies Used
 
