@@ -2,6 +2,18 @@
 
 A modern React Next.js application for searching Indian Railway stations, similar to IRCTC. This demo project uses the official government CDN to fetch real-time station data.
 
+## Live Demo
+
+**Live App:** [https://indian-railway-station-search.vercel.app/](https://indian-railway-station-search.vercel.app/)
+
+**GitHub Repository:** [https://github.com/ProgrammerNomad/indian-railway-station-search](https://github.com/ProgrammerNomad/indian-railway-station-search)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ProgrammerNomad/indian-railway-station-search)
+
+## About
+
+This project provides a user-friendly interface to search through thousands of Indian Railway stations with real-time autocomplete suggestions. Built with Next.js and TypeScript, it features a Select2/IRCTC-style dropdown interface with multi-language support for regional Indian languages.
+
 ## Features
 
 - **Real-time Search**: Search stations by name, code, district, or state
@@ -148,6 +160,10 @@ This is a demo project for educational purposes.
 ## Credits
 
 Station data provided by Indian Railways through the government CDN.
+
+**Developer:** [ProgrammerNomad](https://github.com/ProgrammerNomad)
+
+**Repository:** [github.com/ProgrammerNomad/indian-railway-station-search](https://github.com/ProgrammerNomad/indian-railway-station-search)
 
 ---
 
