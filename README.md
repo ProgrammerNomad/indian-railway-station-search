@@ -112,8 +112,6 @@ indian-railway-station-search/
 ├── public/
 │   └── data/
 │       └── stationupdated.json  # Offline data backup
-├── data/
-│   └── stationupdated.json # Source offline data
 ├── package.json            # Dependencies
 ├── tsconfig.json           # TypeScript config
 ├── next.config.js          # Next.js config
